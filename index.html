@@ -82,14 +82,11 @@
   h1 {
     font-size: 32px;
     color: var(--brand);
-    margin-bottom: 8px;
+    margin-bottom: 0;
   }
 
   .lead {
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.55;
-    max-width: 850px;
+    display: none;
   }
 
   .userbox {
@@ -423,10 +420,7 @@
     <div class="topbar">
       <div>
         <h1 id="pageTitle">Projekt vezérlő</h1>
-        <p class="lead" id="pageLead">
-          Ez a nyitóképernyő a későbbi dashboard, ügyféltörzs és működési modulok kiinduló felülete.
-          A felület jelenleg teszt verzió, de már alkalmas a fő menüpontok és modulstruktúra bemutatására.
-        </p>
+        <p class="lead" id="pageLead"></p>
       </div>
 
       <div class="userbox">
@@ -435,7 +429,6 @@
       </div>
     </div>
 
-    <!-- ÁTTEKINTÉS -->
     <section class="page active" id="attekintes">
       <div class="stats">
         <div class="stat">
@@ -506,7 +499,6 @@
       </div>
     </section>
 
-    <!-- ÜGYFÉLTÖRZS -->
     <section class="page" id="ugyfeltorzs">
       <div class="stats">
         <div class="stat">
@@ -567,7 +559,6 @@
       </div>
     </section>
 
-    <!-- RIPORTOK -->
     <section class="page" id="riportok">
       <div class="stats">
         <div class="stat">
@@ -616,7 +607,6 @@
       </div>
     </section>
 
-    <!-- FOLYAMATOK -->
     <section class="page" id="folyamatok">
       <h2 class="section-title">Folyamatkezelés</h2>
 
@@ -643,7 +633,6 @@
       </div>
     </section>
 
-    <!-- BEÁLLÍTÁSOK -->
     <section class="page" id="beallitasok">
       <h2 class="section-title">Beállítások</h2>
 
@@ -709,31 +698,25 @@
 
   const pageData = {
     attekintes: {
-      title: "Projekt vezérlő",
-      lead: "Ez a nyitóképernyő a későbbi dashboard, ügyféltörzs és működési modulok kiinduló felülete. A felület jelenleg teszt verzió, de már alkalmas a fő menüpontok és modulstruktúra bemutatására."
+      title: "Projekt vezérlő"
     },
     ugyfeltorzs: {
-      title: "Ügyféltörzs",
-      lead: "Partner- és ügyféladatok áttekintése. Később ide kerülhet a keresés, új ügyfél rögzítése, módosítás és backend kapcsolat."
+      title: "Ügyféltörzs"
     },
     riportok: {
-      title: "Riportok",
-      lead: "Vezetői riportok és üzleti mutatók bemutató felülete. A későbbi dashboardok innen lesznek elérhetők."
+      title: "Riportok"
     },
     folyamatok: {
-      title: "Folyamatok",
-      lead: "Működési folyamatok, státuszok és fejlesztési lépések követése egy közös képernyőn."
+      title: "Folyamatok"
     },
     beallitasok: {
-      title: "Beállítások",
-      lead: "A rendszer alapbeállításainak bemutató nézete. Jelenleg csak frontend oldali minta."
+      title: "Beállítások"
     }
   };
 
   const links = document.querySelectorAll(".menu-link");
   const pages = document.querySelectorAll(".page");
   const pageTitle = document.getElementById("pageTitle");
-  const pageLead = document.getElementById("pageLead");
 
   links.forEach(link => {
     link.addEventListener("click", function () {
@@ -746,7 +729,6 @@
       document.getElementById(target).classList.add("active");
 
       pageTitle.textContent = pageData[target].title;
-      pageLead.textContent = pageData[target].lead;
     });
   });
 </script>
