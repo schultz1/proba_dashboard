@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClearPharma: digitális folyamat-térkép (vezetői áttekintés)</title>
+<style>
+  :root{
+    --bg:#faf8f4; --card:#ffffff; --ink:#1c2733; --muted:#5b6b7b;
+    --brand:#04808f; --brand2:#04498f; --line:#d8e0e8;
+    --ok:#1e7d4f; --okbg:#e3f3ea;
+    --spec:#8a6d00; --specbg:#fdf3d0;
+    --plan:#6b7280; --planbg:#eceff3;
+    --dev:#04808f; --devbg:#dff0f6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink); padding:32px 28px 60px;}
+  header{max-width:1280px; margin:0 auto 28px;}
+  header h1{font-size:26px; font-weight:700; color:var(--brand2);}
+  header p{color:var(--muted); margin-top:6px; font-size:15px; max-width:900px;}
+  .meta{font-size:12px; color:var(--muted); margin-top:8px;}
+  .wrap{max-width:1280px; margin:0 auto;}
+
+  .flow{display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin-top:8px;}
+  .station{flex:1 1 190px; min-width:190px; display:flex; flex-direction:column;}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px 14px 14px; flex:1; display:flex; flex-direction:column; gap:8px;
+    box-shadow:0 1px 3px rgba(20,40,60,.07); position:relative; transition:transform .12s, box-shadow .12s;
+  }
+  a.card{text-decoration:none; color:inherit; cursor:pointer;}
+  a.card:hover{transform:translateY(-3px); box-shadow:0 6px 16px rgba(14,110,142,.18); border-color:var(--brand);}
+  .num{
+    width:26px; height:26px; border-radius:50%; background:var(--brand); color:#fff;
+    font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .card h3{font-size:15px; line-height:1.25;}
+  .card .desc{font-size:12.5px; color:var(--muted); line-height:1.45; flex:1;}
+  .badge{align-self:flex-start; font-size:11px; font-weight:700; padding:3px 9px; border-radius:99px; letter-spacing:.2px;}
+  .b-ok{background:var(--okbg); color:var(--ok);}
+  .b-spec{background:var(--specbg); color:var(--spec);}
+  .b-plan{background:var(--planbg); color:var(--plan);}
+  .b-dev{background:var(--devbg); color:var(--dev);}
+  .open{font-size:11.5px; color:var(--brand); font-weight:600;}
+  .arrow{
+    align-self:center; padding:0 4px; color:var(--brand); font-size:20px; font-weight:700;
+    display:flex; align-items:center; height:100%;
+  }
+  @media (max-width:1100px){ .arrow{display:none;} .flow{gap:12px;} }
+
+  .foundation{margin-top:34px;}
+  .foundation h2, .scriptbox h2{font-size:15px; color:var(--brand2); text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;}
+  .fgrid{display:flex; gap:16px; flex-wrap:wrap;}
+  .fgrid .station{flex:1 1 320px;}
+
+  .legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:30px; font-size:12px; color:var(--muted); align-items:center;}
+
+  .scriptbox{margin-top:36px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px;}
+  .scriptbox summary{cursor:pointer; font-size:15px; font-weight:700; color:var(--brand2); list-style:none;}
+  .scriptbox summary::before{content:"▸ "; color:var(--brand);}
+  .scriptbox details[open] summary::before{content:"▾ ";}
+  .scriptbox ol{margin:14px 0 0 20px; display:flex; flex-direction:column; gap:10px; font-size:13.5px;}
+  .scriptbox li b{color:var(--brand2);}
+  .scriptbox .t{color:var(--muted); font-size:12px;}
+  .note{margin-top:18px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:12px;}
+</style>
+</head>
+<body>
+<header>
+  <img src="clear_pharma_logo.png" alt="ClearPharma" style="height:40px;vertical-align:middle;margin-bottom:10px">
+  <h1>ClearPharma: a digitális működés egy térképen</h1>
+  <p>A teljes folyamat a kórházi rendeléstől a vezetői controllingig. Minden állomásra kattintva megnyílik a hozzá tartozó működő mockup vagy bemutató. A jelvények a valós készültséget mutatják.</p>
+  <div class="meta">Vezetői értekezlet, 2026. június 8. | Minden adat a mockupokban demó, élesben törzsadatból töltődik.</div>
+</header>
+
+<div class="wrap">
+
+  <a href="cockpit_v1.html" target="_blank" style="display:flex; align-items:center; gap:16px; background:linear-gradient(100deg,#04498f,#04808f); color:#fff; border-radius:14px; padding:18px 22px; margin-bottom:26px; text-decoration:none; box-shadow:0 4px 14px rgba(4,73,143,.3);">
+    <div style="font-size:30px;">▶</div>
+    <div style="flex:1;">
+      <div style="font-size:17px; font-weight:700;">Belépés a Cockpitba: egységes, szerepkör szerinti felület</div>
+      <div style="font-size:13px; opacity:.85; margin-top:3px;">Egy belépés, és mindenki a saját feladatköréhez tartozó modulokat látja: rendelés, raktár, kiszállítás, számlázás, kintlévőség, árajánlat, dashboard. Élesben a Cloudflare Access bejelentkezett emailje dönti el a szerepkört.</div>
+    </div>
+    <span class="badge b-ok" style="flex:none;">ÚJ, KATTINTS IDE</span>
+  </a>
+
+  <div class="flow">
+    <div class="station">
+      <a class="card" href="webshop_v4.html" target="_blank">
+        <div class="num">1</div>
+        <h3>Kórházi rendelés<br>(B2B webshop)</h3>
+        <div class="desc">A kórház saját portálon rendel: készlet, tender-keretek, evidencia, terméklap ami a KEF-nél többet tud (egységár, lejárat-garancia, feloldási info, helyettesítő ajánlás).</div>
+        <span class="badge b-ok">MOCKUP V4 KÉSZ</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+    <div class="arrow">→</div>
+    <div class="station">
+      <a class="card" href="rendeles_folyamat.html" target="_blank">
+        <div class="num">2</div>
+        <h3>Rendelés-feldolgozás</h3>
+        <div class="desc">Beérkező rendelés útja: visszaigazolás, jóváhagyási kör, státuszkövetés darabszámmal. A folyamat fel van térképezve a kórházi interjúk alapján (Bajcsy, Tatabánya).</div>
+        <span class="badge b-ok">FOLYAMAT KÉSZ</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+    <div class="arrow">→</div>
+    <div class="station">
+      <a class="card" href="raktar_qr.html" target="_blank">
+        <div class="num">3</div>
+        <h3>Raktári kiszedés<br>(QR-folyamat)</h3>
+        <div class="desc">Doboz- és raklapszintű QR azonosítás, nap-záráskor cél szerinti raklap-konszolidáció. A vonalkódolvasó hardver (Zebra TC51) már megvan.</div>
+        <span class="badge b-spec">SPEC KÉSZ, FEJLESZTÉS KÖVETKEZIK</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+    <div class="arrow">→</div>
+    <div class="station">
+      <a class="card" href="kiszallitas_flow.html" target="_blank">
+        <div class="num">4</div>
+        <h3>Kiszállítás<br>(3PL integráció)</h3>
+        <div class="desc">Napi fuvar-összeállítás: rendelések auto-besorolása (Budapest → AirMax, vidék → Euromedic), cél szerinti raklap-konszolidáció hierarchikus QR-lánccal, és a doboz-számok egyszeri rögzítése + automatikus átadása a fuvarozónak (A15 kézi kettős munka megszüntetése).</div>
+        <span class="badge b-dev">MOCKUP KÉSZ</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+    <div class="arrow">→</div>
+    <div class="station">
+      <a class="card" href="szamlazas_flow.html" target="_blank">
+        <div class="num">5</div>
+        <h3>Számlázás<br>(e-számla, NEAK-tételes)</h3>
+        <div class="desc">Kiszállított rendelésből kötegelt számlázás: tételes nettó/ÁFA/bruttó, e-számla, NEAK-keretes jelölés, sztornó. CP saját számlázó rendszerére / ERP-re kötve (nem külső szolgáltató). Vevőtörzsből és a kiszállítás-adatból töltődik.</div>
+        <span class="badge b-dev">MOCKUP KÉSZ</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+    <div class="arrow">→</div>
+    <div class="station">
+      <a class="card" href="kintlevoseg_flow.html" target="_blank">
+        <div class="num">6</div>
+        <h3>Kintlévőség-kezelés<br>(pénzügy)</h3>
+        <div class="desc">Nyitott és lejárt számlák korosítása vevőnként a könyvelő exportjából, A/B/C felszólító-levél javaslattal és behajtási prioritással. Következő lépés: hitelkeret + rendelés-stop beállítható küszöbbel.</div>
+        <span class="badge b-ok">MŰKÖDIK (2026-04 ADAT)</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+    <div class="arrow">→</div>
+    <div class="station">
+      <a class="card" href="sales_dashboard.html" target="_blank">
+        <div class="num">7</div>
+        <h3>Vezetői controlling<br>(Sales dashboard)</h3>
+        <div class="desc">Havi tény-forgalom interaktív dashboardon a PharmaLog-exportból, automatikus szűrési szabályokkal. Következő réteg: target-rendszer és terv-tény összevetés.</div>
+        <span class="badge b-ok">MŰKÖDIK (2026-05 ADAT)</span>
+        <span class="open">Megnyitás ›</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="foundation">
+    <h2>Vezetői döntés-eszközök: stratégia és kalkuláció</h2>
+    <div class="fgrid">
+      <div class="station">
+        <a class="card" href="sajat_szallitas_modell.html" target="_blank">
+          <div class="num">$</div>
+          <h3>Saját szállítás kontra 3PL<br>(make-vs-buy kalkulátor)</h3>
+          <div class="desc">Interaktív break-even modell: mikortól éri meg saját flotta az AirMax/Euromedic 3PL helyett. Beruházás, fix költség, sofőrbér, üzemanyag, megtérülés, kapacitás-kihasználtság, és a szabad kapacitás eladása a nálunk kisebb cégeknek. Minden szám szerkeszthető, élő számítás.</div>
+          <span class="badge b-dev">KALKULÁTOR KÉSZ, VALÓS SZÁMOKRA VÁR</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foundation">
+    <h2>Kiegészítő modulok: beszerzés, bevételezés, iktatás, tender, NEAK keret</h2>
+    <div class="fgrid">
+      <div class="station">
+        <a class="card" href="beszerzes_flow.html" target="_blank">
+          <div class="num">E</div>
+          <h3>Beszerzés<br>(gyártói rendelés)</h3>
+          <div class="desc">Beszállítói/gyártói rendelés folyamata: igény, ajánlatkérés, megrendelés, visszaigazolás követése. A modul fel van térképezve, a fő csempére kötve. Következő lépés: backend és törzsadat-kapcsolat.</div>
+          <span class="badge b-dev">MOCKUP KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="bevetelezes_flow.html" target="_blank">
+          <div class="num">F</div>
+          <h3>Bevételezés<br>(beérkező áru)</h3>
+          <div class="desc">Beérkező szállítmány rögzítése: DataMatrix auto-kitöltés és várt mennyiség összevetés, sima vonalkódnál gördülő lejárat + kötelező fotó, kódnélküli gyűjtődobozra saját kód nyomtatás. Adattal később töltjük.</div>
+          <span class="badge b-dev">MOCKUP KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="iktatas_flow.html" target="_blank">
+          <div class="num">G</div>
+          <h3>Iktatás<br>(dokumentumkezelés)</h3>
+          <div class="desc">Bejövő-kimenő dokumentumok iktatása, kategorizálás, határidő-követés, kereshető nyilvántartás. A modul fel van térképezve, a fő csempére kötve. Következő lépés: SharePoint-kapcsolat és backend.</div>
+          <span class="badge b-dev">MOCKUP KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="tender_flow.html" target="_blank">
+          <div class="num">H</div>
+          <h3>Tender-figyelés<br>(közbeszerzés)</h3>
+          <div class="desc">Kiírások figyelése, releváns tenderek szűrése, határidő- és keretkövetés, ajánlat-előkészítés a vevőtörzshöz és árajánlat-modulhoz kötve. A modul fel van térképezve, a fő csempére kötve.</div>
+          <span class="badge b-dev">MOCKUP KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="neak_kvota.html" target="_blank">
+          <div class="num">I</div>
+          <h3>NEAK keret-figyelő<br>(intézményi kvóták)</h3>
+          <div class="desc">Intézményi tételes és pénzügyi keretek felhasználása: 27 kórház, 4 NEAK-finanszírozott készítmény (Bimzelx, Fabrazyme, Avtozma, Remsima), kihasználtság %-ban, hatóanyagonkénti bontás, 70/85% figyelő- és kritikus-küszöb. A rendelés-visszaigazoló "Keret ellenőrzés" gombja ide nyit. Valós NEAK adat.</div>
+          <span class="badge b-ok">ÉLES ADAT</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="visszaigazolas_24h.html" target="_blank">
+          <div class="num">J</div>
+          <h3>Visszaigazolás-tervező<br>(24 órás rendelés-visszaigazolás)</h3>
+          <div class="desc">A beérkező kórházi rendelésre adott automatikus visszaigazolás összeállítója: tételek, várható kiszállítási nap, keret-ellenőrzés, sablonszöveg. A 2. állomás (rendelés-feldolgozás) visszaigazolási lépését részletezi.</div>
+          <span class="badge b-dev">MOCKUP KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foundation">
+    <h2>Közös alap: törzsadat egy helyen</h2>
+    <div class="fgrid">
+      <div class="station">
+        <a class="card" href="sharepoint_struktura.html" target="_blank">
+          <div class="num">A</div>
+          <h3>SharePoint dokumentum- és adatstruktúra</h3>
+          <div class="desc">Egységes mappa- és jogosultsági rend a teljes cégre: specifikációk, pénzügy, tender-adatbázis, sales elemzés. Ez táplálja az összes fenti állomást.</div>
+          <span class="badge b-dev">STRUKTÚRA KÉSZ, BEVEZETÉS FOLYAMATBAN</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="vevotorzs.html" target="_blank">
+          <div class="num">B</div>
+          <h3>Vevőtörzs (CRM alap)</h3>
+          <div class="desc">Partner- és intézménytörzs egy nézetben: ki rendel, milyen szerződésen, milyen kerettel. A webshop belépés és a számlázás is erre épül.</div>
+          <span class="badge b-ok">NÉZET KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="raktar_fajdalompontok.html" target="_blank">
+          <div class="num">C</div>
+          <h3>Raktár: fájdalompontok és megoldási javaslatok</h3>
+          <div class="desc">Vezetői egyoldalas a helyszíni hangfelvételekből: mért számok (~3 óra nyomtatás, 35,7 mp/doboz, 15-20 km/nap), fájdalompont-megoldás párok, PharmaLog CSV/API javaslat, top 3 akció.</div>
+          <span class="badge b-ok">VEZETŐI MELLÉKLET KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+      <div class="station">
+        <a class="card" href="arajanlat_flow.html" target="_blank">
+          <div class="num">D</div>
+          <h3>Árajánlat-modul<br>(több termék, automatikus árazás)</h3>
+          <div class="desc">Több termék egy ajánlatban, rendelés-szerűen összeállítva: előre beállított marzs alapján automatikus árazás (4 ártípus), generálás hivatalos CP sablonban, Hajnalka ellenőrzi és egy kattintással mehet ki. Az áprilisi Excel+VBA árajánlat-rendszer következő lépcsője.</div>
+          <span class="badge b-dev">MOCKUP V1 KÉSZ</span>
+          <span class="open">Megnyitás ›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>Jelvények:</b>
+    <span class="badge b-ok">KÉSZ / MŰKÖDIK</span>
+    <span class="badge b-dev">FOLYAMATBAN</span>
+    <span class="badge b-spec">SPEC KÉSZ</span>
+    <span class="badge b-plan">TERVEZÉS ALATT</span>
+  </div>
+
+  <div class="legend" style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+    <b>Teljes nézetek:</b>
+    <a href="cockpit_v1.html" target="_blank">Cockpit nézet (szerepkör-váltó) ›</a>
+    <a href="keszultseg.html" target="_blank">Rendszer-készültség áttekintés ›</a>
+  </div>
+
+  <div class="scriptbox">
+    <details>
+      <summary>Demó-forgatókönyv (8-10 perc)</summary>
+      <ol>
+        <li><b>Nyitás ezen a térképen.</b> <span class="t">~1 perc.</span> Üzenet: nem egy webshopot építünk, hanem a teljes működést digitalizáljuk, és minden állomás összeér. A jelvények mutatják, hogy ez nem vízió: a nagy része már kézzel fogható.</li>
+        <li><b>1. állomás, webshop v4.</b> <span class="t">~3 perc.</span> Belépés névre kattintva, 6 csempés kezdőlap, lejárt számla jelzés. Terméklap: ATC, TTT, egységár, garantált lejárat, feloldási info, tender-keret box. Kulcsmondat: a kórházak ma a KEF portált használják, ez minden ponton többet tud annál. Kosár: mennyiség-ablak, evidencia-figyelmeztetés, kvóta-sáv.</li>
+        <li><b>3. állomás, raktári QR + fájdalompont-lap (C).</b> <span class="t">~2 perc.</span> Először a fájdalompontok a mért számokkal (~3 óra nyomtatás, 15-20 km/nap), aztán a megoldási fázisok. Kulcsmondat: az első lépésekhez nem kell sem API, sem szkenner, heteken belül élesíthetők; a hardver (Zebra TC51) már megvan.</li>
+        <li><b>A blokk, SharePoint.</b> <span class="t">~1 perc.</span> Egy közös adatalap, ebből dolgozik minden. Már épül.</li>
+        <li><b>6. állomás, sales dashboard.</b> <span class="t">~2 perc.</span> Élő, valós májusi adat. Kulcsmondat: a vezetés már most ebből látja a tény-forgalmat, a következő lépés a terv-tény controlling.</li>
+        <li><b>Zárás a térképen.</b> <span class="t">~1 perc.</span> Készültség összegzés: 4 állomás kész vagy működik, 1 folyamatban, 2 megtervezve. Következő lépések: webshop spec véglegesítés, QR fejlesztés indítása, 3PL API egyeztetés.</li>
+      </ol>
+      <div class="note">Tipp: a mockupok demó-adatokkal futnak, internetkapcsolat nem kell hozzájuk. Ha kérdés jön egy részletre, az adott állomás HTML-je mélyebben is kattintható.</div>
+    </details>
+  </div>
+
+</div>
+</body>
+</html>
