@@ -43,6 +43,15 @@
     padding: 28px 22px;
   }
 
+  .sidebar-logo {
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+    display: block;
+    margin: 0 0 20px 0;
+    border-radius: 16px;
+  }
+
   .logo {
     font-size: 22px;
     font-weight: 800;
@@ -302,7 +311,9 @@
     font-weight: 700;
   }
 
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 11px 12px;
@@ -405,6 +416,8 @@
 <div class="layout">
 
   <aside>
+    <img src="face.jpg" alt="Logó" class="sidebar-logo">
+
     <div class="logo">Menüpontok</div>
 
     <nav>
@@ -506,16 +519,19 @@
           <div class="value">128</div>
           <div class="note">Teszt adat</div>
         </div>
+
         <div class="stat">
           <div class="label">Aktív ügyfelek</div>
           <div class="value">94</div>
           <div class="note">Előkészített lista</div>
         </div>
+
         <div class="stat">
           <div class="label">Hiányos adatok</div>
           <div class="value">12</div>
           <div class="note">Ellenőrzendő rekord</div>
         </div>
+
         <div class="stat">
           <div class="label">Utolsó frissítés</div>
           <div class="value">Ma</div>
@@ -542,12 +558,14 @@
               <td>Kovács Anna</td>
               <td><span class="badge ok">Aktív</span></td>
             </tr>
+
             <tr>
               <td>U-002</td>
               <td>Teszt Ügyfél Zrt.</td>
               <td>Nagy Péter</td>
               <td><span class="badge dev">Ellenőrzés alatt</span></td>
             </tr>
+
             <tr>
               <td>U-003</td>
               <td>Demo Szolgáltató Bt.</td>
@@ -566,16 +584,19 @@
           <div class="value">6</div>
           <div class="note">Előkészített nézet</div>
         </div>
+
         <div class="stat">
           <div class="label">Frissítés</div>
           <div class="value">Napi</div>
           <div class="note">Tervezett működés</div>
         </div>
+
         <div class="stat">
           <div class="label">Dashboard státusz</div>
           <div class="value">v1</div>
           <div class="note">Alap képernyő</div>
         </div>
+
         <div class="stat">
           <div class="label">Adatkapcsolat</div>
           <div class="value">API</div>
@@ -592,12 +613,14 @@
           <p>Fő mutatók, havi értékek, trendek és területi bontások megjelenítése.</p>
           <span class="badge dev">TERVEZÉS ALATT</span>
         </div>
+
         <div class="card">
           <div class="icon">2</div>
           <h3>Ügyfél aktivitás</h3>
           <p>Aktív, passzív és új ügyfelek áttekintése, ügyfélcsoportok szerinti bontásban.</p>
           <span class="badge dev">TERVEZÉS ALATT</span>
         </div>
+
         <div class="card">
           <div class="icon">3</div>
           <h3>Folyamat státusz</h3>
@@ -676,7 +699,6 @@
     </section>
 
   </main>
-
 </div>
 
 <script>
@@ -697,21 +719,11 @@
     nap.charAt(0).toUpperCase() + nap.slice(1);
 
   const pageData = {
-    attekintes: {
-      title: "Projekt vezérlő"
-    },
-    ugyfeltorzs: {
-      title: "Ügyféltörzs"
-    },
-    riportok: {
-      title: "Riportok"
-    },
-    folyamatok: {
-      title: "Folyamatok"
-    },
-    beallitasok: {
-      title: "Beállítások"
-    }
+    attekintes: { title: "Projekt vezérlő" },
+    ugyfeltorzs: { title: "Ügyféltörzs" },
+    riportok: { title: "Riportok" },
+    folyamatok: { title: "Folyamatok" },
+    beallitasok: { title: "Beállítások" }
   };
 
   const links = document.querySelectorAll(".menu-link");
