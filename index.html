@@ -7,13 +7,16 @@
 
 <style>
   :root {
-    --bg: #f5f7fa;
-    --card: #ffffff;
-    --ink: #1c2733;
-    --muted: #5b6b7b;
+    --bg: #f3f6fb;
+    --panel: #ffffff;
+    --ink: #142033;
+    --muted: #66758a;
     --brand: #04498f;
     --brand2: #04808f;
     --line: #d8e0e8;
+    --ok: #1e7d4f;
+    --warn: #b7791f;
+    --shadow: 0 8px 24px rgba(20, 40, 70, .08);
   }
 
   * {
@@ -26,92 +29,367 @@
     font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--bg);
     color: var(--ink);
-    padding: 40px 28px;
   }
 
-  .page {
-    max-width: 1100px;
-    margin: 0 auto;
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
   }
 
-  header {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 32px;
-    box-shadow: 0 2px 8px rgba(20,40,60,.08);
+  aside {
+    background: #0f2747;
+    color: #fff;
+    padding: 28px 22px;
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: .3px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: #b8c7da;
+    margin-bottom: 34px;
+    line-height: 1.4;
+  }
+
+  nav a {
+    display: block;
+    color: #dce8f7;
+    text-decoration: none;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  nav a.active,
+  nav a:hover {
+    background: rgba(255,255,255,.12);
+    color: #fff;
+  }
+
+  main {
+    padding: 34px 42px 50px;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 28px;
   }
 
   h1 {
     font-size: 32px;
     color: var(--brand);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
-  p {
+  .lead {
     color: var(--muted);
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.55;
     max-width: 850px;
   }
 
-  .meta {
-    margin-top: 18px;
-    font-size: 13px;
+  .userbox {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+    min-width: 210px;
+    box-shadow: var(--shadow);
+  }
+
+  .userbox .small {
+    font-size: 12px;
     color: var(--muted);
   }
 
-  .info-box {
-    margin-top: 28px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 24px;
-    box-shadow: 0 1px 4px rgba(20,40,60,.06);
+  .userbox .name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 4px;
   }
 
-  .info-box h2 {
-    font-size: 20px;
-    color: var(--brand2);
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .stat .label {
+    color: var(--muted);
+    font-size: 13px;
     margin-bottom: 10px;
   }
 
-  .status {
+  .stat .value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--brand);
+  }
+
+  .stat .note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .section-title {
+    margin: 34px 0 16px;
+    font-size: 18px;
+    color: var(--brand);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform .15s, box-shadow .15s;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(20, 40, 70, .13);
+  }
+
+  .icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: #e4f4f7;
+    color: var(--brand2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+  }
+
+  .card h3 {
+    font-size: 19px;
+    color: var(--ink);
+  }
+
+  .card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .badge {
     display: inline-block;
-    margin-top: 16px;
-    padding: 6px 14px;
+    align-self: flex-start;
+    padding: 5px 12px;
     border-radius: 999px;
-    background: #e3f3ea;
-    color: #1e7d4f;
+    font-size: 12px;
     font-weight: 700;
-    font-size: 13px;
+  }
+
+  .ok {
+    background: #e3f3ea;
+    color: var(--ok);
+  }
+
+  .dev {
+    background: #e4f4f7;
+    color: var(--brand2);
+  }
+
+  .warn {
+    background: #fff4d7;
+    color: var(--warn);
+  }
+
+  .footer-panel {
+    margin-top: 30px;
+    background: linear-gradient(100deg, #04498f, #04808f);
+    color: #fff;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+
+  .footer-panel h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .footer-panel p {
+    color: rgba(255,255,255,.86);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 1000px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    aside {
+      position: relative;
+    }
+
+    .stats,
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .topbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 650px) {
+    main {
+      padding: 24px 18px;
+    }
+
+    .stats,
+    .cards {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
 
 <body>
-  <div class="page">
+<div class="layout">
 
-    <header>
-      <h1>Proba Dashboard</h1>
-      <p>
-        Ez a Cloudflare-en futó teszt frontend kezdőoldala.
-        A felület később bővíthető dashboard, ügyféltörzs, riport vagy egyéb működési modulokkal.
-      </p>
-      <div class="meta">
-        Teszt verzió | GitHub + Cloudflare deploy
-      </div>
-    </header>
-
-    <div class="info-box">
-      <h2>Frontend sikeresen betöltődött</h2>
-      <p>
-        Az oldal jelenleg egyszerű kezdőképernyőként működik.
-        A korábbi csempék és ClearPharma hivatkozások eltávolításra kerültek.
-      </p>
-      <span class="status">MŰKÖDIK</span>
+  <aside>
+    <div class="logo">Proba Dashboard</div>
+    <div class="subtitle">
+      Teszt frontend<br>
+      Cloudflare + GitHub környezetben
     </div>
 
-  </div>
+    <nav>
+      <a href="#" class="active">Áttekintés</a>
+      <a href="#">Ügyféltörzs</a>
+      <a href="#">Riportok</a>
+      <a href="#">Folyamatok</a>
+      <a href="#">Beállítások</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>Vezetői áttekintő felület</h1>
+        <p class="lead">
+          Ez a nyitóképernyő a későbbi dashboard, ügyféltörzs és működési modulok kiinduló felülete.
+          A felület jelenleg teszt verzió, de már alkalmas a fő menüpontok és modulstruktúra bemutatására.
+        </p>
+      </div>
+
+      <div class="userbox">
+        <div class="small">Környezet</div>
+        <div class="name">Teszt rendszer</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="label">Frontend státusz</div>
+        <div class="value">OK</div>
+        <div class="note">Cloudflare deploy aktív</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Forráskód</div>
+        <div class="value">Git</div>
+        <div class="note">GitHub repositoryból frissül</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Modulok</div>
+        <div class="value">3</div>
+        <div class="note">Előkészített fő terület</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Verzió</div>
+        <div class="value">v1</div>
+        <div class="note">Első tisztított nyitóoldal</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Fő modulok</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="icon">Ü</div>
+        <h3>Ügyféltörzs</h3>
+        <p>
+          Partner- és ügyféladatok egységes kezelése.
+          Később ide kerülhet a keresés, új ügyfél rögzítése és módosítás.
+        </p>
+        <span class="badge dev">TERVEZÉS ALATT</span>
+      </div>
+
+      <div class="card">
+        <div class="icon">R</div>
+        <h3>Riport dashboard</h3>
+        <p>
+          Vezetői mutatók, összesítések és elemzések egy közös felületen.
+          A cél egy gyorsan áttekinthető üzleti dashboard.
+        </p>
+        <span class="badge ok">ALAP KÉSZ</span>
+      </div>
+
+      <div class="card">
+        <div class="icon">F</div>
+        <h3>Folyamatkezelés</h3>
+        <p>
+          Működési folyamatok, státuszok és feladatok követése.
+          Ide később munkafolyamatok és triggerelt folyamatok kerülhetnek.
+        </p>
+        <span class="badge warn">KÖVETKEZŐ LÉPÉS</span>
+      </div>
+    </div>
+
+    <div class="footer-panel">
+      <h2>Következő fejlesztési lépés</h2>
+      <p>
+        A következő körben a csempéket valódi oldalakra lehet kötni:
+        ügyféltörzs lista, új ügyfél rögzítése, riport nézet és backend API kapcsolat.
+      </p>
+    </div>
+
+  </main>
+
+</div>
 </body>
 </html>
