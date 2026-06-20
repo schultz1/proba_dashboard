@@ -102,21 +102,21 @@
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 14px;
-    padding: 14px 18px;
+    padding: 16px 20px;
     min-width: 230px;
     box-shadow: var(--shadow);
   }
 
-  .userbox .small {
-    font-size: 12px;
-    color: var(--muted);
+  .userbox .name {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
   }
 
-  .userbox .name {
-    font-size: 16px;
-    font-weight: 700;
-    margin-top: 4px;
-    color: var(--ink);
+  .userbox .small {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
   }
 
   .stats {
@@ -315,10 +315,11 @@
         </p>
       </div>
 
-     <div class="userbox">
-  <div class="name" id="maiDatum">Betöltés...</div>
-  <div class="small" id="maiNap" style="margin-top:6px;">Betöltés...</div>
-</div>
+      <div class="userbox">
+        <div class="name" id="maiDatum">Betöltés...</div>
+        <div class="small" id="maiNap">Betöltés...</div>
+      </div>
+    </div>
 
     <div class="stats">
       <div class="stat">
