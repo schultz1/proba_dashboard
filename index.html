@@ -831,6 +831,17 @@
     return "dev";
   }
 
+  function getNowText() {
+    return new Date().toLocaleString("hu-HU", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
+  }
+
   function updateStats(data) {
     const osszes = Array.isArray(data) ? data.length : 0;
     const aktiv = data.filter(x => x.Statusz === "Aktív").length;
@@ -839,7 +850,7 @@
     document.getElementById("statUgyfelek").textContent = osszes;
     document.getElementById("statAktiv").textContent = aktiv;
     document.getElementById("statHianyos").textContent = hianyos;
-    document.getElementById("statFrissites").textContent = "Ma";
+    document.getElementById("statFrissites").textContent = getNowText();
   }
 
   async function loadVevok() {
