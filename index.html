@@ -58,6 +58,7 @@
     border-radius: 10px;
     margin-bottom: 8px;
     font-size: 14px;
+    cursor: pointer;
   }
 
   nav a.active,
@@ -110,6 +111,14 @@
     font-size: 13px;
     color: var(--muted);
     margin-top: 6px;
+  }
+
+  .page {
+    display: none;
+  }
+
+  .page.active {
+    display: block;
   }
 
   .stats {
@@ -246,6 +255,120 @@
     line-height: 1.5;
   }
 
+  .table-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 700;
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  input, select, textarea {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .button-row {
+    margin-top: 18px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .btn.primary {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  .btn.secondary {
+    background: #e4f4f7;
+    color: var(--brand2);
+  }
+
+  .process-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .process-item {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .process-item h3 {
+    color: var(--brand);
+    margin-bottom: 8px;
+  }
+
+  .process-item p {
+    color: var(--muted);
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
   @media (max-width: 1000px) {
     .layout {
       grid-template-columns: 1fr;
@@ -256,7 +379,8 @@
     }
 
     .stats,
-    .cards {
+    .cards,
+    .form-grid {
       grid-template-columns: 1fr 1fr;
     }
 
@@ -272,7 +396,8 @@
     }
 
     .stats,
-    .cards {
+    .cards,
+    .form-grid {
       grid-template-columns: 1fr;
     }
   }
@@ -286,19 +411,19 @@
     <div class="logo">Menüpontok</div>
 
     <nav>
-      <a href="#" class="active">Áttekintés</a>
-      <a href="#">Ügyféltörzs</a>
-      <a href="#">Riportok</a>
-      <a href="#">Folyamatok</a>
-      <a href="#">Beállítások</a>
+      <a class="menu-link active" data-page="attekintes">Áttekintés</a>
+      <a class="menu-link" data-page="ugyfeltorzs">Ügyféltörzs</a>
+      <a class="menu-link" data-page="riportok">Riportok</a>
+      <a class="menu-link" data-page="folyamatok">Folyamatok</a>
+      <a class="menu-link" data-page="beallitasok">Beállítások</a>
     </nav>
   </aside>
 
   <main>
     <div class="topbar">
       <div>
-        <h1>Projekt vezérlő</h1>
-        <p class="lead">
+        <h1 id="pageTitle">Projekt vezérlő</h1>
+        <p class="lead" id="pageLead">
           Ez a nyitóképernyő a későbbi dashboard, ügyféltörzs és működési modulok kiinduló felülete.
           A felület jelenleg teszt verzió, de már alkalmas a fő menüpontok és modulstruktúra bemutatására.
         </p>
@@ -310,73 +435,256 @@
       </div>
     </div>
 
-    <div class="stats">
-      <div class="stat">
-        <div class="label">Frontend státusz</div>
-        <div class="value">OK</div>
-        <div class="note">Cloudflare deploy aktív</div>
+    <!-- ÁTTEKINTÉS -->
+    <section class="page active" id="attekintes">
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Frontend státusz</div>
+          <div class="value">OK</div>
+          <div class="note">Cloudflare deploy aktív</div>
+        </div>
+
+        <div class="stat">
+          <div class="label">Forráskód</div>
+          <div class="value">Git</div>
+          <div class="note">GitHub repositoryból frissül</div>
+        </div>
+
+        <div class="stat">
+          <div class="label">Modulok</div>
+          <div class="value">3</div>
+          <div class="note">Előkészített fő terület</div>
+        </div>
+
+        <div class="stat">
+          <div class="label">Verzió</div>
+          <div class="value">v1</div>
+          <div class="note">Első tisztított nyitóoldal</div>
+        </div>
       </div>
 
-      <div class="stat">
-        <div class="label">Forráskód</div>
-        <div class="value">Git</div>
-        <div class="note">GitHub repositoryból frissül</div>
+      <h2 class="section-title">Fő modulok</h2>
+
+      <div class="cards">
+        <div class="card">
+          <div class="icon">Ü</div>
+          <h3>Ügyféltörzs</h3>
+          <p>
+            Partner- és ügyféladatok egységes kezelése.
+            Később ide kerülhet a keresés, új ügyfél rögzítése és módosítás.
+          </p>
+          <span class="badge dev">TERVEZÉS ALATT</span>
+        </div>
+
+        <div class="card">
+          <div class="icon">R</div>
+          <h3>Riport dashboard</h3>
+          <p>
+            Vezetői mutatók, összesítések és elemzések egy közös felületen.
+            A cél egy gyorsan áttekinthető üzleti dashboard.
+          </p>
+          <span class="badge ok">ALAP KÉSZ</span>
+        </div>
+
+        <div class="card">
+          <div class="icon">F</div>
+          <h3>Folyamatkezelés</h3>
+          <p>
+            Működési folyamatok, státuszok és feladatok követése.
+            Ide később munkafolyamatok és triggerelt folyamatok kerülhetnek.
+          </p>
+          <span class="badge warn">KÖVETKEZŐ LÉPÉS</span>
+        </div>
       </div>
 
-      <div class="stat">
-        <div class="label">Modulok</div>
-        <div class="value">3</div>
-        <div class="note">Előkészített fő terület</div>
-      </div>
-
-      <div class="stat">
-        <div class="label">Verzió</div>
-        <div class="value">v1</div>
-        <div class="note">Első tisztított nyitóoldal</div>
-      </div>
-    </div>
-
-    <h2 class="section-title">Fő modulok</h2>
-
-    <div class="cards">
-      <div class="card">
-        <div class="icon">Ü</div>
-        <h3>Ügyféltörzs</h3>
+      <div class="footer-panel">
+        <h2>Következő fejlesztési lépés</h2>
         <p>
-          Partner- és ügyféladatok egységes kezelése.
-          Később ide kerülhet a keresés, új ügyfél rögzítése és módosítás.
+          A következő körben a csempéket valódi oldalakra lehet kötni:
+          ügyféltörzs lista, új ügyfél rögzítése, riport nézet és backend API kapcsolat.
         </p>
-        <span class="badge dev">TERVEZÉS ALATT</span>
+      </div>
+    </section>
+
+    <!-- ÜGYFÉLTÖRZS -->
+    <section class="page" id="ugyfeltorzs">
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Ügyfelek száma</div>
+          <div class="value">128</div>
+          <div class="note">Teszt adat</div>
+        </div>
+        <div class="stat">
+          <div class="label">Aktív ügyfelek</div>
+          <div class="value">94</div>
+          <div class="note">Előkészített lista</div>
+        </div>
+        <div class="stat">
+          <div class="label">Hiányos adatok</div>
+          <div class="value">12</div>
+          <div class="note">Ellenőrzendő rekord</div>
+        </div>
+        <div class="stat">
+          <div class="label">Utolsó frissítés</div>
+          <div class="value">Ma</div>
+          <div class="note">GitHub frontend</div>
+        </div>
       </div>
 
-      <div class="card">
-        <div class="icon">R</div>
-        <h3>Riport dashboard</h3>
-        <p>
-          Vezetői mutatók, összesítések és elemzések egy közös felületen.
-          A cél egy gyorsan áttekinthető üzleti dashboard.
-        </p>
-        <span class="badge ok">ALAP KÉSZ</span>
+      <h2 class="section-title">Ügyféltörzs lista</h2>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Ügyfélkód</th>
+              <th>Cégnév</th>
+              <th>Kapcsolattartó</th>
+              <th>Státusz</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>U-001</td>
+              <td>Minta Partner Kft.</td>
+              <td>Kovács Anna</td>
+              <td><span class="badge ok">Aktív</span></td>
+            </tr>
+            <tr>
+              <td>U-002</td>
+              <td>Teszt Ügyfél Zrt.</td>
+              <td>Nagy Péter</td>
+              <td><span class="badge dev">Ellenőrzés alatt</span></td>
+            </tr>
+            <tr>
+              <td>U-003</td>
+              <td>Demo Szolgáltató Bt.</td>
+              <td>Szabó Éva</td>
+              <td><span class="badge warn">Hiányos adat</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RIPORTOK -->
+    <section class="page" id="riportok">
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Riportok száma</div>
+          <div class="value">6</div>
+          <div class="note">Előkészített nézet</div>
+        </div>
+        <div class="stat">
+          <div class="label">Frissítés</div>
+          <div class="value">Napi</div>
+          <div class="note">Tervezett működés</div>
+        </div>
+        <div class="stat">
+          <div class="label">Dashboard státusz</div>
+          <div class="value">v1</div>
+          <div class="note">Alap képernyő</div>
+        </div>
+        <div class="stat">
+          <div class="label">Adatkapcsolat</div>
+          <div class="value">API</div>
+          <div class="note">Következő lépés</div>
+        </div>
       </div>
 
-      <div class="card">
-        <div class="icon">F</div>
-        <h3>Folyamatkezelés</h3>
-        <p>
-          Működési folyamatok, státuszok és feladatok követése.
-          Ide később munkafolyamatok és triggerelt folyamatok kerülhetnek.
-        </p>
-        <span class="badge warn">KÖVETKEZŐ LÉPÉS</span>
-      </div>
-    </div>
+      <h2 class="section-title">Riport dashboard</h2>
 
-    <div class="footer-panel">
-      <h2>Következő fejlesztési lépés</h2>
-      <p>
-        A következő körben a csempéket valódi oldalakra lehet kötni:
-        ügyféltörzs lista, új ügyfél rögzítése, riport nézet és backend API kapcsolat.
-      </p>
-    </div>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">1</div>
+          <h3>Értékesítési összesítő</h3>
+          <p>Fő mutatók, havi értékek, trendek és területi bontások megjelenítése.</p>
+          <span class="badge dev">TERVEZÉS ALATT</span>
+        </div>
+        <div class="card">
+          <div class="icon">2</div>
+          <h3>Ügyfél aktivitás</h3>
+          <p>Aktív, passzív és új ügyfelek áttekintése, ügyfélcsoportok szerinti bontásban.</p>
+          <span class="badge dev">TERVEZÉS ALATT</span>
+        </div>
+        <div class="card">
+          <div class="icon">3</div>
+          <h3>Folyamat státusz</h3>
+          <p>Feladatok, nyitott ügyek, lezárt tételek és határidős folyamatok követése.</p>
+          <span class="badge ok">ALAP KÉSZ</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOLYAMATOK -->
+    <section class="page" id="folyamatok">
+      <h2 class="section-title">Folyamatkezelés</h2>
+
+      <div class="process-list">
+        <div class="process-item">
+          <h3>1. Új ügyfél rögzítése</h3>
+          <p>Új partner adatainak felvétele, kötelező mezők ellenőrzése, majd mentés az ügyféltörzsbe.</p>
+        </div>
+
+        <div class="process-item">
+          <h3>2. Ügyféladat módosítása</h3>
+          <p>Meglévő rekord keresése, mezők módosítása, változás dátumának és módosító felhasználónak rögzítése.</p>
+        </div>
+
+        <div class="process-item">
+          <h3>3. Riport frissítés</h3>
+          <p>Adatok frissítése, ellenőrzés, majd dashboard nézet újratöltése.</p>
+        </div>
+
+        <div class="process-item">
+          <h3>4. Backend API kapcsolat</h3>
+          <p>A frontend később Access vagy MS SQL backendhez kapcsolható API-n keresztül.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEÁLLÍTÁSOK -->
+    <section class="page" id="beallitasok">
+      <h2 class="section-title">Beállítások</h2>
+
+      <div class="table-card">
+        <div class="form-grid">
+          <div class="field">
+            <label>Rendszer neve</label>
+            <input type="text" value="Projekt vezérlő">
+          </div>
+
+          <div class="field">
+            <label>Környezet</label>
+            <select>
+              <option>Teszt</option>
+              <option>Éles</option>
+              <option>Fejlesztői</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Frontend forrás</label>
+            <input type="text" value="GitHub">
+          </div>
+
+          <div class="field">
+            <label>Deploy környezet</label>
+            <input type="text" value="Cloudflare">
+          </div>
+
+          <div class="field" style="grid-column:1/-1;">
+            <label>Megjegyzés</label>
+            <textarea>Ide kerülhetnek a rendszerrel kapcsolatos beállítási megjegyzések.</textarea>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="btn primary" type="button">Mentés</button>
+          <button class="btn secondary" type="button">Mégsem</button>
+        </div>
+      </div>
+    </section>
 
   </main>
 
@@ -398,6 +706,49 @@
   document.getElementById("maiDatum").textContent = datum;
   document.getElementById("maiNap").textContent =
     nap.charAt(0).toUpperCase() + nap.slice(1);
+
+  const pageData = {
+    attekintes: {
+      title: "Projekt vezérlő",
+      lead: "Ez a nyitóképernyő a későbbi dashboard, ügyféltörzs és működési modulok kiinduló felülete. A felület jelenleg teszt verzió, de már alkalmas a fő menüpontok és modulstruktúra bemutatására."
+    },
+    ugyfeltorzs: {
+      title: "Ügyféltörzs",
+      lead: "Partner- és ügyféladatok áttekintése. Később ide kerülhet a keresés, új ügyfél rögzítése, módosítás és backend kapcsolat."
+    },
+    riportok: {
+      title: "Riportok",
+      lead: "Vezetői riportok és üzleti mutatók bemutató felülete. A későbbi dashboardok innen lesznek elérhetők."
+    },
+    folyamatok: {
+      title: "Folyamatok",
+      lead: "Működési folyamatok, státuszok és fejlesztési lépések követése egy közös képernyőn."
+    },
+    beallitasok: {
+      title: "Beállítások",
+      lead: "A rendszer alapbeállításainak bemutató nézete. Jelenleg csak frontend oldali minta."
+    }
+  };
+
+  const links = document.querySelectorAll(".menu-link");
+  const pages = document.querySelectorAll(".page");
+  const pageTitle = document.getElementById("pageTitle");
+  const pageLead = document.getElementById("pageLead");
+
+  links.forEach(link => {
+    link.addEventListener("click", function () {
+      const target = this.dataset.page;
+
+      links.forEach(l => l.classList.remove("active"));
+      this.classList.add("active");
+
+      pages.forEach(page => page.classList.remove("active"));
+      document.getElementById(target).classList.add("active");
+
+      pageTitle.textContent = pageData[target].title;
+      pageLead.textContent = pageData[target].lead;
+    });
+  });
 </script>
 
 </body>
