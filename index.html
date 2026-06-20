@@ -16,6 +16,7 @@
     --line: #d8e0e8;
     --ok: #1e7d4f;
     --warn: #b7791f;
+    --danger: #b91c1c;
     --shadow: 0 8px 24px rgba(20, 40, 70, .08);
   }
 
@@ -287,6 +288,7 @@
   td {
     padding: 14px 12px;
     border-bottom: 1px solid var(--line);
+    vertical-align: middle;
   }
 
   tr:last-child td {
@@ -322,6 +324,11 @@
     background: #fff;
   }
 
+  input:disabled {
+    background: #eef2f7;
+    color: #66758a;
+  }
+
   textarea {
     min-height: 120px;
     resize: vertical;
@@ -351,6 +358,34 @@
   .btn.secondary {
     background: #e4f4f7;
     color: var(--brand2);
+  }
+
+  .btn.danger {
+    background: #fee2e2;
+    color: var(--danger);
+  }
+
+  .btn.small {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+
+  .message {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .message.okmsg {
+    background: #e3f3ea;
+    color: var(--ok);
+  }
+
+  .message.errmsg {
+    background: #fee2e2;
+    color: var(--danger);
   }
 
   .process-list {
@@ -477,9 +512,9 @@
           <h3>Ügyféltörzs</h3>
           <p>
             Partner- és ügyféladatok egységes kezelése.
-            Később ide kerülhet a keresés, új ügyfél rögzítése és módosítás.
+            Az adatok az Access adatbázisból töltődnek, új partner rögzíthető és meglévő partner módosítható.
           </p>
-          <span class="badge dev">TERVEZÉS ALATT</span>
+          <span class="badge ok">ACCESS KAPCSOLAT</span>
         </div>
 
         <div class="card">
@@ -506,8 +541,7 @@
       <div class="footer-panel">
         <h2>Következő fejlesztési lépés</h2>
         <p>
-          A következő körben a csempéket valódi oldalakra lehet kötni:
-          ügyféltörzs lista, új ügyfél rögzítése, riport nézet és backend API kapcsolat.
+          Az Ügyféltörzs már Access backendhez köthető. A következő körben keresés, törlés, jogosultságkezelés és fix Cloudflare Tunnel beállítás következhet.
         </p>
       </div>
     </section>
@@ -516,30 +550,35 @@
       <div class="stats">
         <div class="stat">
           <div class="label">Ügyfelek száma</div>
-          <div class="value">128</div>
-          <div class="note">Teszt adat</div>
+          <div class="value" id="statUgyfelek">-</div>
+          <div class="note">Access adatbázis</div>
         </div>
 
         <div class="stat">
           <div class="label">Aktív ügyfelek</div>
-          <div class="value">94</div>
-          <div class="note">Előkészített lista</div>
+          <div class="value" id="statAktiv">-</div>
+          <div class="note">Statusz = Aktív</div>
         </div>
 
         <div class="stat">
           <div class="label">Hiányos adatok</div>
-          <div class="value">12</div>
+          <div class="value" id="statHianyos">-</div>
           <div class="note">Ellenőrzendő rekord</div>
         </div>
 
         <div class="stat">
           <div class="label">Utolsó frissítés</div>
-          <div class="value">Ma</div>
-          <div class="note">GitHub frontend</div>
+          <div class="value" id="statFrissites">-</div>
+          <div class="note">Frontend betöltés</div>
         </div>
       </div>
 
       <h2 class="section-title">Ügyféltörzs lista</h2>
+
+      <div class="button-row" style="margin-bottom:18px; margin-top:0;">
+        <button class="btn primary" type="button" onclick="ujPartner()">+ Új partner</button>
+        <button class="btn secondary" type="button" onclick="loadVevok()">Lista frissítése</button>
+      </div>
 
       <div class="table-card">
         <table>
@@ -549,31 +588,53 @@
               <th>Cégnév</th>
               <th>Kapcsolattartó</th>
               <th>Státusz</th>
+              <th>Módosítás</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="vevoTableBody">
             <tr>
-              <td>U-001</td>
-              <td>Minta Partner Kft.</td>
-              <td>Kovács Anna</td>
-              <td><span class="badge ok">Aktív</span></td>
-            </tr>
-
-            <tr>
-              <td>U-002</td>
-              <td>Teszt Ügyfél Zrt.</td>
-              <td>Nagy Péter</td>
-              <td><span class="badge dev">Ellenőrzés alatt</span></td>
-            </tr>
-
-            <tr>
-              <td>U-003</td>
-              <td>Demo Szolgáltató Bt.</td>
-              <td>Szabó Éva</td>
-              <td><span class="badge warn">Hiányos adat</span></td>
+              <td colspan="5">Adatok betöltése...</td>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div class="table-card" id="partnerFormBox" style="display:none; margin-top:20px;">
+        <h2 class="section-title" id="formTitle" style="margin-top:0;">Új partner</h2>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Ügyfélkód</label>
+            <input type="text" id="formUgyfelkod" placeholder="pl. U-004">
+          </div>
+
+          <div class="field">
+            <label>Cégnév</label>
+            <input type="text" id="formCegnev" placeholder="Partner neve">
+          </div>
+
+          <div class="field">
+            <label>Kapcsolattartó</label>
+            <input type="text" id="formKapcsolattarto" placeholder="Kapcsolattartó neve">
+          </div>
+
+          <div class="field">
+            <label>Státusz</label>
+            <select id="formStatusz">
+              <option>Aktív</option>
+              <option>Ellenőrzés alatt</option>
+              <option>Hiányos adat</option>
+              <option>Inaktív</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="btn primary" type="button" onclick="mentPartner()">Mentés</button>
+          <button class="btn secondary" type="button" onclick="bezarForm()">Mégsem</button>
+        </div>
+
+        <div class="message" id="formMessage"></div>
       </div>
     </section>
 
@@ -636,12 +697,12 @@
       <div class="process-list">
         <div class="process-item">
           <h3>1. Új ügyfél rögzítése</h3>
-          <p>Új partner adatainak felvétele, kötelező mezők ellenőrzése, majd mentés az ügyféltörzsbe.</p>
+          <p>Új partner adatainak felvétele, kötelező mezők ellenőrzése, majd mentés az Access ügyféltörzsbe.</p>
         </div>
 
         <div class="process-item">
           <h3>2. Ügyféladat módosítása</h3>
-          <p>Meglévő rekord keresése, mezők módosítása, változás dátumának és módosító felhasználónak rögzítése.</p>
+          <p>Meglévő rekord kiválasztása, mezők módosítása, majd a módosítás dátumának automatikus frissítése.</p>
         </div>
 
         <div class="process-item">
@@ -651,7 +712,7 @@
 
         <div class="process-item">
           <h3>4. Backend API kapcsolat</h3>
-          <p>A frontend később Access vagy MS SQL backendhez kapcsolható API-n keresztül.</p>
+          <p>A frontend Access backendhez kapcsolódik Cloudflare Tunnel segítségével.</p>
         </div>
       </div>
     </section>
@@ -686,14 +747,14 @@
           </div>
 
           <div class="field" style="grid-column:1/-1;">
-            <label>Megjegyzés</label>
-            <textarea>Ide kerülhetnek a rendszerrel kapcsolatos beállítási megjegyzések.</textarea>
+            <label>Aktuális API cím</label>
+            <input type="text" id="apiBaseDisplay" readonly>
           </div>
-        </div>
 
-        <div class="button-row">
-          <button class="btn primary" type="button">Mentés</button>
-          <button class="btn secondary" type="button">Mégsem</button>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Megjegyzés</label>
+            <textarea>Az API cím quick Cloudflare Tunnel esetén indításonként változhat. Ha a tunnel URL változik, az index.html-ben az API_BASE értékét frissíteni kell.</textarea>
+          </div>
         </div>
       </div>
     </section>
@@ -702,6 +763,8 @@
 </div>
 
 <script>
+  const API_BASE = "https://scanners-titled-declined-workforce.trycloudflare.com";
+
   const now = new Date();
 
   const datum = now.toLocaleDateString("hu-HU", {
@@ -741,8 +804,181 @@
       document.getElementById(target).classList.add("active");
 
       pageTitle.textContent = pageData[target].title;
+
+      if (target === "ugyfeltorzs") {
+        loadVevok();
+      }
     });
   });
+
+  let editMode = false;
+  let currentKod = null;
+
+  function showMessage(text, type) {
+    const box = document.getElementById("formMessage");
+    box.textContent = text;
+    box.className = "message " + (type === "ok" ? "okmsg" : "errmsg");
+    box.style.display = "block";
+  }
+
+  function clearMessage() {
+    const box = document.getElementById("formMessage");
+    box.textContent = "";
+    box.style.display = "none";
+  }
+
+  function getStatusClass(statusz) {
+    if (statusz === "Aktív") return "ok";
+    if (statusz === "Hiányos adat") return "warn";
+    return "dev";
+  }
+
+  function updateStats(data) {
+    const osszes = Array.isArray(data) ? data.length : 0;
+    const aktiv = data.filter(x => x.Statusz === "Aktív").length;
+    const hianyos = data.filter(x => x.Statusz === "Hiányos adat").length;
+
+    document.getElementById("statUgyfelek").textContent = osszes;
+    document.getElementById("statAktiv").textContent = aktiv;
+    document.getElementById("statHianyos").textContent = hianyos;
+    document.getElementById("statFrissites").textContent = "Ma";
+  }
+
+  async function loadVevok() {
+    const tbody = document.getElementById("vevoTableBody");
+    tbody.innerHTML = `<tr><td colspan="5">Adatok betöltése...</td></tr>`;
+
+    try {
+      const response = await fetch(`${API_BASE}/api/vevok`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        tbody.innerHTML = `<tr><td colspan="5">Hiba: ${data.error || "Az API nem adott vissza adatot."}</td></tr>`;
+        return;
+      }
+
+      updateStats(data);
+
+      if (!Array.isArray(data) || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5">Nincs megjeleníthető partner.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${row.Ugyfelkod || ""}</td>
+          <td>${row.Cegnev || ""}</td>
+          <td>${row.Kapcsolattarto || ""}</td>
+          <td><span class="badge ${getStatusClass(row.Statusz)}">${row.Statusz || ""}</span></td>
+          <td>
+            <button class="btn secondary small" type="button">
+              Módosítás
+            </button>
+          </td>
+        `;
+
+        tr.querySelector("button").addEventListener("click", () => modositPartner(row));
+        tbody.appendChild(tr);
+      });
+
+    } catch (err) {
+      tbody.innerHTML = `<tr><td colspan="5">Hiba az adatok betöltésekor: ${err.message}</td></tr>`;
+    }
+  }
+
+  function ujPartner() {
+    editMode = false;
+    currentKod = null;
+    clearMessage();
+
+    document.getElementById("formTitle").textContent = "Új partner";
+    document.getElementById("formUgyfelkod").disabled = false;
+
+    document.getElementById("formUgyfelkod").value = "";
+    document.getElementById("formCegnev").value = "";
+    document.getElementById("formKapcsolattarto").value = "";
+    document.getElementById("formStatusz").value = "Aktív";
+
+    document.getElementById("partnerFormBox").style.display = "block";
+    document.getElementById("formUgyfelkod").focus();
+  }
+
+  function modositPartner(row) {
+    editMode = true;
+    currentKod = row.Ugyfelkod;
+    clearMessage();
+
+    document.getElementById("formTitle").textContent = "Partner módosítása";
+    document.getElementById("formUgyfelkod").disabled = true;
+
+    document.getElementById("formUgyfelkod").value = row.Ugyfelkod || "";
+    document.getElementById("formCegnev").value = row.Cegnev || "";
+    document.getElementById("formKapcsolattarto").value = row.Kapcsolattarto || "";
+    document.getElementById("formStatusz").value = row.Statusz || "Aktív";
+
+    document.getElementById("partnerFormBox").style.display = "block";
+    document.getElementById("formCegnev").focus();
+  }
+
+  function bezarForm() {
+    document.getElementById("partnerFormBox").style.display = "none";
+    clearMessage();
+  }
+
+  async function mentPartner() {
+    clearMessage();
+
+    const payload = {
+      Ugyfelkod: document.getElementById("formUgyfelkod").value.trim(),
+      Cegnev: document.getElementById("formCegnev").value.trim(),
+      Kapcsolattarto: document.getElementById("formKapcsolattarto").value.trim(),
+      Statusz: document.getElementById("formStatusz").value
+    };
+
+    if (!payload.Ugyfelkod || !payload.Cegnev) {
+      showMessage("Az Ügyfélkód és a Cégnév kötelező.", "err");
+      return;
+    }
+
+    const url = editMode
+      ? `${API_BASE}/api/vevok/${encodeURIComponent(currentKod)}`
+      : `${API_BASE}/api/vevok`;
+
+    const method = editMode ? "PUT" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        showMessage(result.error || "Hiba történt mentés közben.", "err");
+        return;
+      }
+
+      showMessage(result.message || "Mentés sikeres.", "ok");
+      await loadVevok();
+
+      setTimeout(() => {
+        bezarForm();
+      }, 700);
+
+    } catch (err) {
+      showMessage("Hiba: " + err.message, "err");
+    }
+  }
+
+  document.getElementById("apiBaseDisplay").value = API_BASE;
 </script>
 
 </body>
